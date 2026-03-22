@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>THE PEAK PERFORMANCE PROTOCOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --c-accent:#D4521A;
+  --c-accent2:#F97316;
+  --c-green:#15803D;
+  --c-rose:#BE123C;
+  --c-sky:#0369A1;
+  --c-indigo:#4338CA;
+  --c-amber:#B45309;
+  --c-cyan:#0E7490;
+  --c-violet:#6D28D9;
+  --c-bg:#F9F8F6;
+  --c-white:#FFFFFF;
+  --c-surface:#FFFFFF;
+  --c-surface2:#F4F3F0;
+  --c-border:#E8E5DF;
+  --c-border2:#D1CEC8;
+  --c-text:#111111;
+  --c-text2:#555555;
+  --c-text3:#999999;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  --r:12px;--r-lg:20px;--r-xl:28px;
+}
+body{font-family:'Inter','Noto Sans JP',sans-serif;background:var(--c-bg);color:var(--c-text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.label{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--c-text3);}
+.heading{font-family:'Bebas Neue',sans-serif;letter-spacing:.03em;}
+
+/* ═══ HERO ═══ */
+.hero{
+  position:relative;min-height:440px;overflow:hidden;
+  background:#0C0C0C;
+  display:flex;align-items:flex-end;
+}
+/* animated grain overlay */
+.hero::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+.hero-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(212,82,26,.18) 0%,transparent 45%),
+             linear-gradient(to top,#0C0C0C 0%,rgba(12,12,12,.6) 55%,rgba(12,12,12,.15) 100%);
+}
+/* SVG athlete background */
+.hero-athlete{
+  position:absolute;right:0;top:0;bottom:0;width:50%;max-width:500px;
+  display:flex;align-items:flex-end;justify-content:center;
+  pointer-events:none;overflow:hidden;
+}
+.hero-athlete img{
+  height:100%;width:auto;
+  object-fit:contain;object-position:bottom center;
+  opacity:.18;
+  filter:grayscale(100%) contrast(1.3) brightness(2);
+  mix-blend-mode:luminosity;
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:56px 56px 64px;
+  max-width:1080px;width:100%;margin:0 auto;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;padding:6px 14px;margin-bottom:24px;
+}
+.hero-eyebrow span{font-size:10px;font-weight:600;letter-spacing:.2em;color:rgba(255,255,255,.55);text-transform:uppercase;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,8vw,96px);line-height:.92;letter-spacing:.02em;
+  color:#fff;margin-bottom:12px;
+}
+.hero-title em{color:var(--c-accent2);font-style:normal;}
+.hero-sub{font-size:12px;font-weight:500;letter-spacing:.25em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:28px;}
+.hero-model-tag{
+  position:absolute;bottom:24px;right:48px;
+  font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+}
+.bgm-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 22px;border-radius:100px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.07);backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.7);cursor:pointer;
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  font-family:'Inter',sans-serif;transition:all .25s;
+}
+.bgm-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;}
+.bgm-btn.playing{background:var(--c-accent);border-color:var(--c-accent2);color:#fff;}
+.bgm-icon{width:16px;height:16px;fill:currentColor;}
+
+/* ═══ STATS ═══ */
+.stats-section{background:var(--c-white);border-bottom:1px solid var(--c-border);padding:40px 56px;}
+.stats-section-inner{max-width:1080px;margin:0 auto;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:16px;margin-top:20px;}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr;}}
+.stat-card{
+  background:var(--c-surface2);border:1.5px solid var(--c-border);
+  border-radius:var(--r-lg);padding:24px;transition:all .2s;
+}
+.stat-card:hover{border-color:var(--c-border2);box-shadow:var(--shadow);}
+.stat-card-label{margin-bottom:16px;}
+.stat-vals{display:flex;align-items:center;gap:12px;}
+.stat-cur{font-size:20px;font-weight:300;color:var(--c-text2);font-family:'Inter',sans-serif;}
+.stat-arrow{color:var(--c-accent);font-size:13px;flex-shrink:0;}
+.stat-tgt{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:.02em;color:var(--c-text);line-height:1;}
+.stat-tgt small{font-size:16px;font-family:'Inter',sans-serif;font-weight:300;margin-left:2px;color:var(--c-text2);}
+.stat-badge{
+  display:inline-block;font-size:9px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:4px;
+  background:var(--c-accent);color:#fff;
+}
+.muscle-card{
+  background:linear-gradient(135deg,#111 0%,#1C1C1C 100%);
+  border-radius:var(--r-lg);padding:24px;color:#fff;
+  border:1.5px solid #222;
+}
+.muscle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.muscle-val{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:.02em;line-height:1;}
+.muscle-val.tgt{color:var(--c-accent2);font-size:52px;}
+.muscle-lbl{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;opacity:.4;margin-bottom:4px;}
+.muscle-divider{width:1px;height:48px;background:rgba(255,255,255,.08);}
+.muscle-note{
+  background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.15);
+  border-radius:8px;padding:10px 14px;
+  font-size:11px;font-weight:500;color:#4ade80;
+}
+
+/* ═══ PFC BAR ═══ */
+.pfc-section{background:var(--c-white);border-bottom:1px solid var(--c-border);padding:28px 56px;}
+.pfc-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:180px 1fr;gap:0;align-items:center;}
+@media(max-width:640px){.pfc-inner{grid-template-columns:1fr;gap:20px;}}
+.pfc-total{padding-right:32px;border-right:1.5px solid var(--c-border);}
+.pfc-total-num{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.02em;color:var(--c-text);}
+.pfc-total-num small{font-size:15px;font-family:'Inter',sans-serif;font-weight:300;margin-left:4px;color:var(--c-text2);}
+.pfc-macros{display:grid;grid-template-columns:repeat(3,1fr);padding-left:32px;}
+.pfc-macro{text-align:center;padding:0 16px;}
+.pfc-macro:not(:last-child){border-right:1.5px solid var(--c-border);}
+.pfc-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.02em;}
+.pfc-lbl{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin-top:2px;}
+.pfc-sub{font-size:8px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--c-text3);margin-top:3px;}
+.prot{color:#15803D;}.fat{color:#BE123C;}.carb{color:#0369A1;}
+
+/* ═══ MAIN ═══ */
+.main{max-width:1080px;margin:0 auto;padding:40px 56px 80px;}
+@media(max-width:640px){.main{padding:24px 20px 80px;}.hero-content{padding:40px 24px 48px;}.stats-section{padding:32px 20px;}.pfc-section{padding:24px 20px;}}
+
+/* ═══ TABS ═══ */
+.tabs{
+  display:flex;background:var(--c-white);border:1.5px solid var(--c-border);
+  border-radius:var(--r-xl);padding:5px;gap:4px;margin-bottom:28px;
+  box-shadow:var(--shadow-sm);
+}
+.tab{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 20px;border-radius:calc(var(--r-xl) - 4px);
+  border:none;background:transparent;cursor:pointer;
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--c-text3);transition:all .22s;font-family:'Inter',sans-serif;
+}
+.tab:hover{color:var(--c-text);background:var(--c-surface2);}
+.tab.active-s{background:var(--c-accent);color:#fff;box-shadow:0 2px 10px rgba(212,82,26,.3);}
+.tab.active-d{background:var(--c-green);color:#fff;box-shadow:0 2px 10px rgba(21,128,61,.3);}
+.tab-icon{width:16px;height:16px;flex-shrink:0;}
+
+/* ═══ DAY SELECTOR ═══ */
+.days{display:flex;gap:8px;margin-bottom:28px;overflow-x:auto;padding-bottom:2px;}
+.day-btn{
+  flex-shrink:0;width:52px;height:52px;
+  border-radius:var(--r);border:1.5px solid var(--c-border);
+  background:var(--c-white);cursor:pointer;
+  font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;
+  color:var(--c-text2);transition:all .2s;box-shadow:var(--shadow-sm);
+}
+.day-btn:hover{border-color:var(--c-accent);color:var(--c-accent);}
+.day-btn.sel-str{background:var(--c-accent);border-color:var(--c-accent);color:#fff;box-shadow:0 4px 14px rgba(212,82,26,.35);transform:scale(1.06);}
+.day-btn.sel-hit{background:var(--c-rose);border-color:var(--c-rose);color:#fff;box-shadow:0 4px 14px rgba(190,18,60,.35);transform:scale(1.06);}
+.day-btn.sel-res{background:#111;border-color:#111;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.3);transform:scale(1.06);}
+
+/* ═══ DAY HEADER ═══ */
+.day-header{
+  background:var(--c-white);border:1.5px solid var(--c-border);
+  border-radius:var(--r-xl);padding:28px 32px;margin-bottom:32px;
+  display:flex;align-items:center;gap:20px;box-shadow:var(--shadow-sm);
+  position:relative;overflow:hidden;
+}
+.day-accent-bar{width:4px;height:100%;position:absolute;left:0;top:0;bottom:0;border-radius:var(--r-xl) 0 0 var(--r-xl);}
+.day-accent-bar.str{background:var(--c-accent);}
+.day-accent-bar.hit{background:var(--c-rose);}
+.day-accent-bar.res{background:#333;}
+.day-header-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,52px);letter-spacing:.04em;color:var(--c-text);line-height:1;}
+.day-header-desc{font-size:12px;font-weight:500;color:var(--c-text3);margin-top:4px;letter-spacing:.04em;}
+.day-type-badge{
+  margin-left:auto;padding:6px 14px;border-radius:100px;
+  font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  flex-shrink:0;
+}
+.badge-str{background:#FFF0E8;color:var(--c-accent);border:1px solid rgba(212,82,26,.2);}
+.badge-hit{background:#FFF1F2;color:var(--c-rose);border:1px solid rgba(190,18,60,.2);}
+.badge-res{background:#F4F3F0;color:#555;border:1px solid #DDD;}
+
+/* ═══ TIMELINE ═══ */
+.tl{position:relative;padding-left:36px;margin-left:8px;}
+.tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1.5px;background:var(--c-border);}
+.tl-item{position:relative;padding-bottom:32px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot-wrap{position:absolute;left:-36px;top:2px;width:16px;height:16px;}
+.tl-dot{
+  width:16px;height:16px;border-radius:50%;
+  border:2.5px solid var(--c-white);
+  box-shadow:0 0 0 1.5px var(--c-border2);
+}
+.dot-sky{background:var(--c-sky);box-shadow:0 0 0 1.5px rgba(3,105,161,.3);}
+.dot-violet{background:var(--c-violet);box-shadow:0 0 0 1.5px rgba(109,40,217,.3);}
+.dot-emerald{background:#059669;box-shadow:0 0 0 1.5px rgba(5,150,105,.3);}
+.dot-rose{background:var(--c-rose);box-shadow:0 0 0 1.5px rgba(190,18,60,.3);}
+.dot-amber{background:var(--c-amber);box-shadow:0 0 0 1.5px rgba(180,83,9,.3);}
+.dot-cyan{background:var(--c-cyan);box-shadow:0 0 0 1.5px rgba(14,116,144,.3);}
+.dot-indigo{background:var(--c-indigo);box-shadow:0 0 0 1.5px rgba(67,56,202,.3);}
+.tl-time{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--c-text3);margin-bottom:5px;}
+.tl-header{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:4px;}
+.tl-task{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.03em;color:var(--c-text);line-height:1;}
+.tl-pfc{
+  font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;
+  background:#FFF0E8;color:var(--c-accent);border:1px solid rgba(212,82,26,.15);
+}
+.tl-desc{font-size:14px;font-weight:400;color:var(--c-text2);line-height:1.55;}
+
+/* ═══ TRAINING CARD ═══ */
+.tc{
+  margin-top:14px;background:var(--c-surface2);border:1.5px solid var(--c-border);
+  border-radius:var(--r-lg);padding:20px;max-width:560px;
+}
+.tc-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid var(--c-border);padding-bottom:12px;margin-bottom:14px;}
+.tc-lbl{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--c-text3);}
+.tc-icon{width:14px;height:14px;fill:var(--c-accent);}
+.tc-link{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c-accent);text-decoration:none;transition:opacity .15s;}
+.tc-link:hover{opacity:.65;}
+.tc-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+.ex-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--c-white);border:1.5px solid var(--c-border);
+  border-radius:10px;padding:12px 16px;margin-bottom:7px;transition:border-color .15s;
+}
+.ex-row:last-child{margin-bottom:0;}
+.ex-row:hover{border-color:var(--c-accent);}
+.ex-name{font-size:13px;font-weight:600;color:var(--c-text);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.04em;}
+.ex-wt{font-size:11px;font-weight:600;color:var(--c-accent);background:#FFF0E8;padding:3px 10px;border-radius:6px;border:1px solid rgba(212,82,26,.15);}
+
+/* ═══ DIET ═══ */
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.03em;color:var(--c-text);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.meal-card{
+  background:var(--c-white);border:1.5px solid var(--c-border);
+  border-radius:var(--r-lg);padding:22px;margin-bottom:10px;
+  transition:all .2s;box-shadow:var(--shadow-sm);
+}
+.meal-card:hover{border-color:var(--c-green);box-shadow:var(--shadow);}
+.meal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.meal-kcal{font-size:11px;font-weight:600;color:var(--c-accent);background:#FFF0E8;padding:3px 10px;border-radius:6px;border:1px solid rgba(212,82,26,.15);}
+.meal-items{font-size:14px;font-weight:500;color:var(--c-text);margin-bottom:14px;line-height:1.5;}
+.macro-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.macro-pill{border-radius:10px;padding:10px 12px;text-align:center;}
+.mp-p{background:#F0FDF4;border:1.5px solid #BBF7D0;}
+.mp-f{background:#FFF1F2;border:1.5px solid #FECDD3;}
+.mp-c{background:#F0F9FF;border:1.5px solid #BAE6FD;}
+.mp-lbl{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px;}
+.mp-p .mp-lbl{color:#15803D;}.mp-f .mp-lbl{color:#BE123C;}.mp-c .mp-lbl{color:#0369A1;}
+.mp-val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;}
+.mp-p .mp-val{color:#16A34A;}.mp-f .mp-val{color:#E11D48;}.mp-c .mp-val{color:#0284C7;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr;}}
+.info-card{background:var(--c-white);border:1.5px solid var(--c-border);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-sm);}
+.info-card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.04em;padding-bottom:10px;margin-bottom:10px;border-bottom:1.5px solid var(--c-border);display:flex;align-items:center;gap:8px;}
+.ict-sky{color:var(--c-sky);}.ict-green{color:var(--c-green);}
+.info-card-body{font-size:13px;font-weight:400;color:var(--c-text2);line-height:1.7;}
+.prep-card{
+  background:#111;border-radius:var(--r-xl);padding:32px 36px;
+  display:flex;align-items:center;gap:24px;
+}
+.prep-icon-wrap{
+  width:72px;height:72px;flex-shrink:0;border-radius:var(--r-lg);
+  background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.prep-icon-wrap svg{width:34px;height:34px;stroke:var(--c-accent2);fill:none;stroke-width:1.5;}
+.prep-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;color:#fff;margin-bottom:6px;}
+.prep-body{font-size:13px;font-weight:400;color:rgba(255,255,255,.45);line-height:1.65;}
+
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<!-- ════ HERO ════ -->
+<header class="hero">
+  <div class="hero-gradient"></div>
+
+  <!-- Athlete image: CC0 Public Domain silhouette via freesvg.org -->
+  <div class="hero-athlete">
+    <img
+      src="https://freesvg.org/img/1538857953.png"
+      alt="Muscular athlete silhouette"
+      onerror="this.style.display='none'"
+    />
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-dot"></div>
+      <span>Peak Performance Protocol &nbsp;·&nbsp; 3.22 Update</span>
+    </div>
+    <h1 class="hero-title">THE <em>PEAK</em><br>PERFORMANCE<br>PROTOCOL</h1>
+    <p class="hero-sub">63 · 15 &nbsp;—&nbsp; Focus. Discipline. Results.</p>
+    <button class="bgm-btn" id="bgmBtn" onclick="toggleBgm()">
+      <svg class="bgm-icon" id="bgmIcon" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="bgmLabel">Play BGM</span>
+    </button>
+  </div>
+  <div class="hero-model-tag">Target Physique — Hidetoshi Nakata</div>
+</header>
+
+<!-- ════ STATS ════ -->
+<section class="stats-section">
+  <div class="stats-section-inner">
+    <div class="label">Body Metrics &mdash; Comparison (3/22)</div>
+    <div class="stats-grid">
+      <!-- Weight -->
+      <div class="stat-card">
+        <div class="stat-card-label label">Weight</div>
+        <div class="stat-vals">
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--c-text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.12em;">Current</div>
+            <div class="stat-cur">66.40<span style="font-size:13px;margin-left:2px;">kg</span></div>
+          </div>
+          <div class="stat-arrow">→</div>
+          <div style="text-align:right;">
+            <div class="stat-badge">Target</div>
+            <div class="stat-tgt">63.0<small>kg</small></div>
+          </div>
+        </div>
+      </div>
+      <!-- Body Fat -->
+      <div class="stat-card">
+        <div class="stat-card-label label">Body Fat %</div>
+        <div class="stat-vals">
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--c-text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.12em;">Current</div>
+            <div class="stat-cur">19.3<span style="font-size:13px;margin-left:2px;">%</span></div>
+          </div>
+          <div class="stat-arrow">→</div>
+          <div style="text-align:right;">
+            <div class="stat-badge">Target</div>
+            <div class="stat-tgt">15.0<small>%</small></div>
+          </div>
+        </div>
+      </div>
+      <!-- Muscle -->
+      <div class="muscle-card">
+        <div class="muscle-row">
+          <div>
+            <div class="muscle-lbl">Current Muscle</div>
+            <div class="muscle-val">50.90<span style="font-size:14px;opacity:.4;margin-left:4px;">kg</span></div>
+          </div>
+          <div class="muscle-divider"></div>
+          <div style="text-align:right;">
+            <div class="muscle-lbl" style="color:var(--c-accent2);">Target LBM ↑</div>
+            <div class="muscle-val tgt">53.60<span style="font-size:14px;opacity:.5;margin-left:4px;">kg</span></div>
+          </div>
+        </div>
+        <div class="muscle-note">昨日から筋肉量 +0.3kg 増！焼肉の栄養が筋肉へ転換中。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PFC ════ -->
+<section class="pfc-section">
+  <div class="pfc-inner">
+    <div class="pfc-total">
+      <div class="label" style="margin-bottom:8px;">Total Calories</div>
+      <div class="pfc-total-num">~1,535<small>kcal</small></div>
+    </div>
+    <div class="pfc-macros">
+      <div class="pfc-macro">
+        <div class="pfc-val prot">157g</div>
+        <div class="pfc-lbl prot">Protein</div>
+        <div class="pfc-sub">Max Growth</div>
+      </div>
+      <div class="pfc-macro">
+        <div class="pfc-val fat">44g</div>
+        <div class="pfc-lbl fat">Fat</div>
+        <div class="pfc-sub">Optimization</div>
+      </div>
+      <div class="pfc-macro">
+        <div class="pfc-val carb">122g</div>
+        <div class="pfc-lbl carb">Carb</div>
+        <div class="pfc-sub">Fuel Link</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ MAIN ════ -->
+<main class="main">
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active-s" id="tabS" onclick="switchTab('s')">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Schedule
+    </button>
+    <button class="tab" id="tabD" onclick="switchTab('d')">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+      Diet PFC
+    </button>
+  </div>
+
+  <!-- DAY SELECTOR -->
+  <div class="days" id="daySelector"></div>
+
+  <!-- SCHEDULE -->
+  <div id="panelS">
+    <div class="day-header" id="dayHeader">
+      <div class="day-accent-bar str" id="dayBar"></div>
+      <div style="padding-left:8px;">
+        <div class="day-header-name" id="dayName">MONDAY</div>
+        <div class="day-header-desc" id="dayDesc">胸・背中：大筋肉を狙う</div>
+      </div>
+      <div class="day-type-badge badge-str" id="dayBadge">Strength</div>
+    </div>
+    <div class="tl" id="timeline"></div>
+  </div>
+
+  <!-- DIET -->
+  <div id="panelD" class="hidden">
+    <div class="section-title">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+      Nutrition Protocol
+    </div>
+    <div id="mealCards"></div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title ict-sky">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+          Suit Strategy
+        </div>
+        <div class="info-card-body">本命の1着は「5月末」の完成まで待て。今はジャージー素材のシャツ等で凌ぐのが最も賢明な投資。</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title ict-green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          Rice-ka (30g)
+        </div>
+        <div class="info-card-body">水50ml + 600W 1分。ラップなし。広い白い器で混ぜろ。吹きこぼれ知らずの完璧な米化。</div>
+      </div>
+    </div>
+    <div class="prep-card">
+      <div class="prep-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M6 2v6l2 2-2 2v6h12v-6l-2-2 2-2V2M6 12h12"/></svg>
+      </div>
+      <div>
+        <div class="prep-title">The Sunday Bulk Prep System</div>
+        <div class="prep-body">むね肉750g + ブロ500gをボイルし小分け保存。<br>理想のスーツが似合う「V字型体型」を構築せよ。</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<audio id="bgmAudio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
+
+<script>
+const days=[
+  {id:0,label:'月',name:'MONDAY',type:'STRENGTH'},
+  {id:1,label:'火',name:'TUESDAY',type:'HIIT'},
+  {id:2,label:'水',name:'WEDNESDAY',type:'STRENGTH'},
+  {id:3,label:'木',name:'THURSDAY',type:'HIIT'},
+  {id:4,label:'金',name:'FRIDAY',type:'STRENGTH'},
+  {id:5,label:'土',name:'SATURDAY',type:'REST'},
+  {id:6,label:'日',name:'SUNDAY',type:'REST'},
+];
+const training=[
+  {title:'Upper Body',desc:'胸・背中：大筋肉を狙う',url:'https://youtube.com/playlist?list=PLOGhdxKWH0LmqSFFq3MFaFPYEqsI_QfEe',items:[{n:'ダンベルプレス',w:'19-23kg'},{n:'ワンハンドロー',w:'14-19kg'}]},
+  {title:'Burn HIIT',desc:'全身：脂肪燃焼 + 血流促進',url:'https://youtube.com/playlist?list=PLOGhdxKWH0LllR3GITKa0qt14z0EUc4NZ',items:[{n:'全身高強度HIIT',w:'自重'}]},
+  {title:'Lower & Shoulder',desc:'脚・肩：代謝向上と形作り',url:'https://youtube.com/playlist?list=PLOGhdxKWH0Ln6Zh2IgqJ8ZgQYoIwl3Nsz',items:[{n:'ゴブレットスクワット',w:'23kg'},{n:'ショルダープレス',w:'9-14kg'}]},
+  {title:'Abs HIIT',desc:'腹筋・体幹：15%で見せる腹作り',url:'https://youtube.com/playlist?list=PLOGhdxKWH0LllR3GITKa0qt14z0EUc4NZ',items:[{n:'腹筋・体幹特化HIIT',w:'自重'}]},
+  {title:'Full Circuit',desc:'全身：高回数パンプアップ',url:'https://youtube.com/playlist?list=PLOGhdxKWH0LnF4HJleo-HkReyOthTd76k',items:[{n:'全身ダンベルトレ',w:'軽め'}]},
+  {title:'Weekend Freedom',desc:'家族の日：全力遊び',items:[{n:'公園遊び・散歩',w:'パパ業'}]},
+  {title:'Preparation Day',desc:'休息 + 一括調理',items:[{n:'むね肉 750g ボイル',w:'Prep'}]},
+];
+const weekdayFlow=[
+  {time:'05:10',task:'Wake Up',desc:'お白湯＋REYS 1.5杯＋バナナ1/2＋MCTコーヒー',pfc:'145kcal [P:15 F:5 C:12]',dot:'dot-sky'},
+  {time:'05:15',task:'English Boost',desc:'英語力をブースト。TOEIC 800点への第一歩',dot:'dot-violet'},
+  {time:'06:00',task:'Training',desc:'',isTraining:true,dot:'dot-emerald'},
+  {time:'06:30',task:'Post-Workout',desc:'REYS 3杯 (水割り)',pfc:'110kcal [P:30 F:1 C:2]',dot:'dot-rose'},
+  {time:'07:30',task:'Breakfast',desc:'オートミール30g＋REYS 1杯＋ヨーグルト＋味噌汁',pfc:'225kcal [P:20 F:4 C:28]',dot:'dot-amber'},
+  {time:'12:00',task:'Lunch',desc:'むね肉150g＋ブロッコリ100g＋オートミール30g＋ゆで卵＋味噌汁',pfc:'415kcal [P:50 F:10 C:28]',dot:'dot-cyan'},
+  {time:'15:00',task:'Snack',desc:'SAVAS 紙パック＋ナッツ 15g',pfc:'190kcal [P:17 F:8 C:13]',dot:'dot-indigo'},
+  {time:'Night',task:'Dinner',desc:'家族と食事 [肉100:20g/ゆで卵1:6g]',pfc:'~450kcal [P:25 F:15 C:40]',dot:'dot-rose'},
+];
+const weekendFlow=[
+  {time:'07:00',task:'Morning',desc:'家族とゆっくり起床',dot:'dot-sky'},
+  {time:'All Day',task:'Family Fun',desc:'パパとして家族と最高の一日を',dot:'dot-rose'},
+];
+const meals=[
+  {label:'Wake Up',items:'REYS 1.5杯 / バナナ1/2 / MCT',p:15,f:5,c:12,kcal:145},
+  {label:'Post-Workout',items:'REYS 3杯 (水)',p:30,f:1,c:2,kcal:110},
+  {label:'Breakfast',items:'オートミール30g / REYS 1杯 / ヨーグルト / 味噌汁',p:20,f:4,c:28,kcal:225},
+  {label:'Lunch',items:'むね肉150g / ブロ100g / オートミール30g / ゆで卵 / 味噌汁',p:50,f:10,c:28,kcal:415},
+  {label:'Snack',items:'SAVAS / ナッツ 15g',p:17,f:8,c:13,kcal:190},
+  {label:'Night Dinner',items:'Dinner (Target)',p:25,f:15,c:40,kcal:450},
+];
+
+let selDay=0,activeTab='s',bgmOn=false;
+
+function init(){renderDays();renderTimeline(0);renderMeals();}
+
+function renderDays(){
+  document.getElementById('daySelector').innerHTML=days.map(d=>{
+    let cls='day-btn';
+    if(d.id===selDay){cls+=(d.type==='STRENGTH')?' sel-str':(d.type==='HIIT')?' sel-hit':' sel-res';}
+    return`<button class="${cls}" onclick="selectDay(${d.id})">${d.label}</button>`;
+  }).join('');
+}
+
+function selectDay(id){selDay=id;renderDays();renderTimeline(id);}
+
+function renderTimeline(idx){
+  const d=days[idx],t=training[idx];
+  // header
+  const bar=document.getElementById('dayBar');
+  const badge=document.getElementById('dayBadge');
+  document.getElementById('dayName').textContent=d.name;
+  document.getElementById('dayDesc').textContent=t.desc;
+  bar.className='day-accent-bar '+(d.type==='HIIT'?'hit':d.type==='REST'?'res':'str');
+  badge.className='day-type-badge '+(d.type==='HIIT'?'badge-hit':d.type==='REST'?'badge-res':'badge-str');
+  badge.textContent=d.type==='HIIT'?'HIIT':d.type==='REST'?'Rest / Family':'Strength';
+
+  const flow=idx<5?weekdayFlow.map(item=>item.isTraining?{...item,desc:t.title}:item):weekendFlow;
+  document.getElementById('timeline').innerHTML=flow.map(item=>`
+    <div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot ${item.dot}"></div></div>
+      <div class="tl-time">${item.time}</div>
+      <div class="tl-header">
+        <div class="tl-task">${item.task}</div>
+        ${item.pfc?`<span class="tl-pfc">${item.pfc}</span>`:''}
+      </div>
+      <div class="tl-desc">${item.desc}</div>
+      ${item.isTraining?renderTC(t):''}
+    </div>
+  `).join('');
+}
+
+function renderTC(t){
+  const link=t.url?`<a class="tc-link" href="${t.url}" target="_blank" rel="noopener" onclick="stopBgm()">Playlist <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`:'';
+  return`<div class="tc">
+    <div class="tc-header">
+      <div class="tc-lbl"><svg class="tc-icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>Training Target</div>
+      ${link}
+    </div>
+    ${t.items.map(e=>`<div class="ex-row"><span class="ex-name">${e.n}</span><span class="ex-wt">${e.w}</span></div>`).join('')}
+  </div>`;
+}
+
+function renderMeals(){
+  document.getElementById('mealCards').innerHTML=meals.map(m=>`
+    <div class="meal-card">
+      <div class="meal-top">
+        <span class="label">${m.label}</span>
+        <span class="meal-kcal">${m.kcal} kcal</span>
+      </div>
+      <div class="meal-items">${m.items}</div>
+      <div class="macro-row">
+        <div class="macro-pill mp-p"><div class="mp-lbl">Protein</div><div class="mp-val">${m.p}g</div></div>
+        <div class="macro-pill mp-f"><div class="mp-lbl">Fat</div><div class="mp-val">${m.f}g</div></div>
+        <div class="macro-pill mp-c"><div class="mp-lbl">Carb</div><div class="mp-val">${m.c}g</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function switchTab(t){
+  activeTab=t;
+  const ps=document.getElementById('panelS'),pd=document.getElementById('panelD');
+  const ts=document.getElementById('tabS'),td=document.getElementById('tabD');
+  if(t==='s'){
+    ps.classList.remove('hidden');pd.classList.add('hidden');
+    ts.className='tab active-s';td.className='tab';
+  }else{
+    pd.classList.remove('hidden');ps.classList.add('hidden');
+    td.className='tab active-d';ts.className='tab';
+  }
+}
+
+function toggleBgm(){
+  const a=document.getElementById('bgmAudio');
+  bgmOn=!bgmOn;
+  if(bgmOn){a.play().catch(()=>{bgmOn=false;});}else{a.pause();}
+  document.getElementById('bgmBtn').className='bgm-btn'+(bgmOn?' playing':'');
+  document.getElementById('bgmLabel').textContent=bgmOn?'Now Playing':'Play BGM';
+}
+function stopBgm(){
+  document.getElementById('bgmAudio').pause();bgmOn=false;
+  document.getElementById('bgmBtn').className='bgm-btn';
+  document.getElementById('bgmLabel').textContent='Play BGM';
+}
+
+init();
+</script>
+</body>
+</html>
